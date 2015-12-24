@@ -1,18 +1,19 @@
 package postgreutil
 
-import(
-    "database/sql"
-    _ "github.com/lib/pq"
-    "encoding/json"
-    "os"
+import (
+	"database/sql"
+	"encoding/json"
+	c "github.com/Faeriol/goutils/config"
+	_ "github.com/lib/pq"
+	"os"
 )
 
 type postgreConf struct {
-	Host   string
-	User   string
-	Passw  string
-	Dbname string
-    MaxConn int
+	Host    string
+	User    string
+	Passw   string
+	Dbname  string
+	MaxConn int
 }
 
 //  Connect to a postgres Postgre
@@ -48,12 +49,8 @@ func ConnectDBFromFile(file string) (*sql.DB, error) {
 
 func CreateConfFile(file string) error {
 	dbconf := postgreConf{"localhost", "dbuser", "dbpass", "yourdatabase", 10}
-	fh, err := os.Create(file)
-	if err != nil {
-		return err
-	}
 
-	enc := json.NewEncoder(fh)
-	err = enc.Encode(&dbconf)
+	err := c.WriteConfFile(&dbconf, file)
+
 	return err
 }
