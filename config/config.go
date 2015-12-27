@@ -23,3 +23,15 @@ func WriteConfFile(v interface{}, file string) error {
 	return err
 
 }
+
+func ReadConfFile(v interface{}, file string) error {
+	fh, err := os.Open(file)
+	if nil != err {
+		return err
+	}
+	defer fh.Close()
+
+	dec := json.NewDecoder(fh)
+	err = dec.Decode(v)
+	return err
+}
