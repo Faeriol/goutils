@@ -13,6 +13,7 @@ func WriteConfFile(v interface{}, file string) error {
 	if err != nil {
 		return err
 	}
+	defer fh.Close()
 
 	data, err := json.MarshalIndent(v, "", "    ")
 	if nil != err {
